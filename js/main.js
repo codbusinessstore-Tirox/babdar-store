@@ -154,6 +154,26 @@
      Smooth scroll to the nearest (not-yet-submitted) order form
      ========================================================================== */
 
+  function smoothScrollTo(targetY, duration) {
+    var startY = window.scrollY;
+    var distance = targetY - startY;
+    var startTime = null;
+
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, startY + distance * easeInOutQuad(progress));
+      if (progress < 1) window.requestAnimationFrame(step);
+    }
+
+    window.requestAnimationFrame(step);
+  }
+
   function scrollToNearestForm() {
     var sections = Array.prototype.slice.call(document.querySelectorAll('.order-form-section'));
     if (!sections.length) return;
@@ -168,7 +188,12 @@
     }, null);
 
     if (nearest) {
-      nearest.section.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+      var targetY = window.scrollY + nearest.section.getBoundingClientRect().top;
+      if (prefersReducedMotion()) {
+        window.scrollTo(0, targetY);
+      } else {
+        smoothScrollTo(targetY, 500);
+      }
     }
   }
 

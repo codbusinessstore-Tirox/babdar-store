@@ -390,6 +390,29 @@ main { display: block; }
   margin-bottom: 14px;
 }
 
+.mechanism-carousel {
+  display: flex;
+  gap: var(--space-card-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mechanism-carousel::-webkit-scrollbar { display: none; }
+
+.mechanism-carousel img {
+  flex: 0 0 85%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  width: 85%;
+  height: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+}
+
 .how-it-works .intro {
   font-size: 16px;
   line-height: 1.7;
